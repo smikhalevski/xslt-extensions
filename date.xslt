@@ -3,7 +3,7 @@
 <!--
   RFC 3339 date and time basic operations for XSLT 1.0.
   
-  @namespace urn:qc:date
+  @namespace urn:ehony:date
   @author Savva Mikhalevski <smikhalevski@gmail.com>
   @summary date:timestamp($date-time)
            date:date-time($timestamp)
@@ -12,7 +12,7 @@
   -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:date="urn:qc:date"
+                xmlns:date="urn:ehony:date"
                 extension-element-prefixes="date">
 
     <date:month>

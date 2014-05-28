@@ -3,12 +3,12 @@
 <!--
   Complex operations with strings and nodesets for XSLT 1.0.
   
-  @namespace urn:qc:string
+  @namespace urn:ehony:string
   @author Savva Mikhalevski <smikhalevski@gmail.com>
   -->
 <xsl:stylesheet version="1.0"
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-				xmlns:string="urn:qc:string"
+				xmlns:string="urn:ehony:string"
 				xmlns:fn="http://exslt.org/common"
 				extension-element-prefixes="string fn">
 	
