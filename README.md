@@ -1,39 +1,53 @@
 # XSLT Extensions
 
-Complex datetime and string operations for XSLT 1.0.
+Complex date-time and string operations for XSLT 1.0.
 
 ## Contents
 
 1. [Datetime](#datetime)
-    1. [`timestamp(date-time)`](#timestampdate-time)
-    2. [`date-time(timestamp)`](#date-timetimestamp)
-    3. [`set-timezone(date-time, offset)`](#set-timezonedate-time-offset)
-    4. [`duration(msec, format)`](#durationmsec-format)
+    1. [`timestamp`](#timestampdate-time)
+    2. [`date-time`](#date-timetimestamp)
+    3. [`set-timezone`](#set-timezonedate-time-offset)
+    4. [`duration`](#durationmsec-format)
 2. [String](#string)
-    1. [`explode(input, delimiter)`](#explodeinput-delimiter)
-    2. [`replace(input, search, replace)`](#replaceinput-search-replace)
-    3. [`repeat(input, count)`](#repeatinput-count)
-    4. [`indent(input, count)`](#indentinput-count)
-    5. [`deflate(input, condense)`](#deflateinput-condense)
-    6. [`xml(nodeset)`](#xmlnodeset)
+    1. [`explode`](#explodeinput-delimiter)
+    2. [`replace`](#replaceinput-search-replace)
+    3. [`repeat`](#repeatinput-count)
+    4. [`indent`](#indentinput-count)
+    5. [`deflate`](#deflateinput-condense)
+    6. [`xml`](#xmlnodeset)
 3. [License](#license)
 
 ## Datetime
-[RFC 3339](http://tools.ietf.org/html/rfc3339) compliant format `[-|+]yyyy[-MM[-dd(T|_)[hh:mm[:ss[.μ]][Z|(+|-)hh:mm]]]]` is used.
-
-Templates are available in namespace `urn:ehony:date`.
+Templates are available in namespace `urn:ehony:date`. [RFC 3339](http://tools.ietf.org/html/rfc3339) compliant format is used: `[-|+]yyyy[-MM[-dd(T|_)[hh:mm[:ss[.μ]][Z|(+|-)hh:mm]]]]`. Following date-times are valid: `2014`, `2014-12-31 09:56`, `2014-12-31T09:56:48.872+04:00`.
 
 ### `timestamp(date-time)`
 
-Calculates difference in milliseconds between midnight 1970-01-01 and provided date. Timestamp is UTC compliant: `Date.setTime` would set valid UTC date in JavaScript. In case invalid format is used then empty string is returned.
+Calculates difference in milliseconds between midnight 1970-01-01 and provided `date-time`. Timestamp is UTC compliant: for example, `Date.setTime` would set valid UTC date in JavaScript. In case invalid format is used then empty string is returned.
 
-Takes optional date-time string parameter `$date-time`, by default equals to value of current node.
+**Parameters**<br/>
+* `$date-time` Optional RFC-compliant date-time string. By default equals to value of current node.
+
+```xslt
+<xsl:call-template name="timestamp">
+   <xsl:with-param name="date-time" value="2014-05-29 12:09:41"/>
+</xsl:call-template>
+```
+
+Outputs: `1401379781`
 
 ### `date-time(timestamp)`
 
 Converts timestamp in millisecond to RFC 3339 compliant UTC date-time string in format `[-]yyyy-MM-ddThh:mm:ss.μμμZ`. If provided timestamp cannot be converted to number, empty string is returned.
-      
-Takes optional signed integer parameter `$timestamp` representing millisecond date offset from midnight 1970-01-01, by default equals to value of current node.
+
+**Parameters**<br/>
+* `$timestamp` Optional signed integer, representing millisecond date offset from midnight 1970-01-01. By default equals to value of current node.
+
+```xslt
+<xsl:call-template name="timestamp">
+   <xsl:with-param name="date-time" value="2014-12-31 09:56"/>
+</xsl:call-template>
+```
 
 ### `set-timezone(date-time, offset)`
 
