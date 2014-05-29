@@ -5,10 +5,10 @@ Complex date-time and string operations for XSLT 1.0.
 ## Contents
 
 1. [Datetime](#datetime)
-    1. [`timestamp`](#timestampdate-time)
-    2. [`date-time`](#date-timetimestamp)
-    3. [`set-timezone`](#set-timezonedate-time-offset)
-    4. [`duration`](#durationmsec-format)
+    1. [`timestamp`](#timestamp)
+    2. [`date-time`](#date-time)
+    3. [`set-timezone`](#set-timezone)
+    4. [`duration`](#duration)
 2. [String](#string)
     1. [`explode`](#explodeinput-delimiter)
     2. [`replace`](#replaceinput-search-replace)
@@ -19,51 +19,66 @@ Complex date-time and string operations for XSLT 1.0.
 3. [License](#license)
 
 ## Datetime
-Templates are available in namespace `urn:ehony:date`. [RFC 3339](http://tools.ietf.org/html/rfc3339) compliant format is used: `[-|+]yyyy[-MM[-dd(T|_)[hh:mm[:ss[.μ]][Z|(+|-)hh:mm]]]]`. Following date-times are valid: `2014`, `2014-12-31 09:56`, `2014-12-31T09:56:48.872+04:00`.
+Templates are available in namespace `urn:ehony:date` further referenced as `date`. [RFC 3339](http://tools.ietf.org/html/rfc3339) compliant format is used: `[-|+]yyyy[-MM[-dd(T|_)[hh:mm[:ss[.μ]][Z|(+|-)hh:mm]]]]`. Following date-times are valid: `2014`, `2014-12-31 09:56`, `2014-12-31T09:56:48.872+04:00`.
 
-### `timestamp(date-time)`
+### `timestamp`
 
-Calculates difference in milliseconds between midnight 1970-01-01 and provided `date-time`. Timestamp is UTC compliant: for example, `Date.setTime` would set valid UTC date in JavaScript. In case invalid format is used then empty string is returned.
+Calculates difference in milliseconds between midnight 1970-01-01 and provided date-time. Timestamp is UTC compliant: for example, `Date.setTime` would set valid UTC date in JavaScript. In case invalid format is used then empty string is returned.
 
 **Parameters**<br/>
-* `$date-time` Optional RFC-compliant date-time string. By default equals to value of current node.
+* `date-time` Optional RFC-compliant date-time string. By default equals to value of current node.
 
 ```xslt
-<xsl:call-template name="timestamp">
+<xsl:call-template name="date:timestamp">
    <xsl:with-param name="date-time" value="2014-05-29 12:09:41"/>
 </xsl:call-template>
 ```
+Output: `1401379781`
 
-Outputs: `1401379781`
+### `date-time`
 
-### `date-time(timestamp)`
-
-Converts timestamp in millisecond to RFC 3339 compliant UTC date-time string in format `[-]yyyy-MM-ddThh:mm:ss.μμμZ`. If provided timestamp cannot be converted to number, empty string is returned.
+Converts timestamp from millisecond to RFC 3339 compliant UTC date-time string in format `[-]yyyy-MM-ddThh:mm:ss.μμμZ`. If provided timestamp cannot be converted to number, empty string is returned.
 
 **Parameters**<br/>
-* `$timestamp` Optional signed integer, representing millisecond date offset from midnight 1970-01-01. By default equals to value of current node.
+* `timestamp` Optional signed integer, representing millisecond date offset from midnight 1970-01-01. By default equals to value of current node.
 
 ```xslt
-<xsl:call-template name="timestamp">
-   <xsl:with-param name="date-time" value="2014-12-31 09:56"/>
+<xsl:call-template name="date:date-time">
+   <xsl:with-param name="timestamp" value="1401379781"/>
 </xsl:call-template>
 ```
+Output: `2014-05-29T12:09:41Z`
 
-### `set-timezone(date-time, offset)`
+### `set-timezone`
 
 Changes provided date-time string to match given timezone and outputs string in format: `[-]yyyy-MM-ddThh:mm:ss.μμμ(Z|(+|-)hh:mm)|""`. When invalid format is provided empty string is returned.
 
-Optional date-time string parameter `$date-time` which by default equals to value of current node.
+**Parameters**<br/>
+* `date-time` Optional RFC-compliant date-time string. By default equals to value of current node.
+* `offset` Optional timezone offset to shift date-time to. Required format is RFC 3339 compliant timezone: `[[+|-]hh[:mm]|Z]`. When equals to `Z` or blank line then UTC time is returned.
 
-Optional `$offset` parameter describing desired timezone offset to shift date-time to. Required format is RFC 3339 compliant timezone: `[[+|-]hh[:mm]|Z]`. When Z or blank line is provided UTC time is returned.
+```xslt
+<xsl:call-template name="date:set-timezone">
+   <xsl:with-param name="date-time" value="2014-05-29 12:09:41"/>
+   <xsl:with-param name="offset" value="+04:00"/>
+</xsl:call-template>
+```
+Output: <code>2014-05-<b>30</b>T<b>04</b>:09:41<b>+04:00</b></code>
 
-### `duration(msec, format)`
+### `duration`
 
-Converts provided milliseconds to a human readable form in requested format: `PdDThHmMs.μμμS|dDhh:mm:ss.μ|""`.
+Converts provided milliseconds to a human readable form in requested [format](http://www.w3.org/TR/xmlschema-2/#duration).
 
-Optional parameter `$msec` sets number of μsec, by default equals to value of current node.
+**Parameters**<br/>
+* `msec` Optional number of μsec. By default equals to value of current node. For empty or non-integer value nothing is output.
+* `format` Optional name of the required format. For `xsd:duration` output format would be `PdDThHmMs.μμμS`, otherwise `dDhh:mm:ss.μ`.
 
-Optional parameter `$format` sets [name of the format](http://www.w3.org/TR/xmlschema-2/#duration).
+```xslt
+<xsl:call-template name="date:duration">
+   <xsl:with-param name="msec" value="93312648600"/>
+</xsl:call-template>
+```
+Output: `5D03:10:00.0`
 
 ## String
 
