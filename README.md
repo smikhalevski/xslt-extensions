@@ -55,7 +55,7 @@ Changes provided date-time string to match given timezone and outputs string in 
 
 **Parameters**<br/>
 * **`date-time`** [RFC][RFC]-compliant date-time string. Optional, by default equals to value of current node.
-* **`offset`** Timezone offset to shift date-time to. Required format is RFC 3339 compliant timezone: `[+|-]hh[:mm]` or `Z`. When equals to `Z` or blank line then UTC time is returned. Optional, `Z` by default.
+* **`offset`** Timezone offset to shift date-time to, in format: `[+|-]hh[:mm]` or `Z`. When equals to `Z` or blank line then UTC time is returned. Optional, `Z` by default.
 
 ```xslt
 <xsl:call-template name="date:set-timezone">
