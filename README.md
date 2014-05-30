@@ -89,8 +89,8 @@ Templates are available in namespace `urn:ehony:string` further referenced as `s
 Analogue of [explode](http://www.php.net/manual/en/function.explode) function in PHP. Returns nodeset where each element is a substring of string formed by splitting input on boundaries formed by the string delimiter.
 
 **Parameters**<br/>
-* `input` Input string. Optional, by default equals to value of current node.
-* `delimiter` Boundaries. To split by multiple delimiters provide a nodeset with arbitarary tags containing text nodes. Omitting this parameter or providing an empty string causes input to be splitted into separate characters.
+* **`input`** Input string. Optional, by default equals to value of current node.
+* **`delimiter`** Boundaries to split input by. To split by multiple delimiters provide a nodeset with arbitarary tags containing text nodes. Omitting this parameter or providing an empty string causes input to be splitted into separate characters.
 
 ```xslt
 <xsl:call-template name="string:explode">
@@ -113,25 +113,63 @@ Output (manually formatted):
 Analogue of [str_replace](http://php.net/manual/en/function.str-replace) function in PHP. Replaces all occurences of searched string with the given value.
 
 **Parameters**<br/>
-* `input` String to search in. Optional, by default equals to value of current node.
-* `search` Character sequence to search for. If omitted then no changes are made to input.
-* `replace` String to substitute, empty by default.
+* **`input`** String to search in. Optional, by default equals to value of current node.
+* **`search`** Character sequence to search for. If omitted then no changes are made to input.
+* **`replace`** String to substitute, empty by default.
+
+```xslt
+<xsl:call-template name="string:replace">
+   <xsl:with-param name="input" value="Hello Peter and Robin!"/>
+   <xsl:with-param name="search">
+      <a>Peter</a>
+      <b>Robin</b>
+   </xsl:with-param>
+   <xsl:with-param name="replace">
+      <a>Kevin</a>
+      <b>Martha</b>
+   </xsl:with-param>
+</xsl:call-template>
+```
+Output: `Hello Kevin and Martha!`
 
 ### `repeat`
 
 Analogue of [str_repeat](http://php.net/manual/en/function.str-repeat) in PHP. Repeats provided string given number of times.
 
 **Parameters**<br/>
-* `input` String to repeat. Optional, by default equals to value of current node.
-* `count` Integer number of repeats, `1` by default.
+* **`input`** String to repeat. Optional, by default equals to value of current node.
+* **`count`** Integer number of repeats, `1` by default.
+
+```xslt
+<xsl:call-template name="string:repeat">
+   <xsl:with-param name="input" value="."/>
+   <xsl:with-param name="count" value="3"/>
+</xsl:call-template>
+```
+Output: `...`
 
 ### `indent`
 
-Indents input by given number of space characters.
+Adds required nuber of whitespaces before each line of the text.
 
 **Parameters**<br/>
-* `input` String to indent. Optional, by default equals to value of current node.
-* `count` Integer number of spaces to indent by, `0` by default.
+* **`input`** String to indent. Optional, by default equals to value of current node.
+* **`count`** Integer number of spaces to indent by, `0` by default.
+
+```xslt
+<xsl:call-template name="string:repeat">
+   <xsl:with-param name="input"><![CDATA[
+Lorem ipsum dolor sit amet,
+consectetur adipisicing elit.
+]]><xsl:with-param/>
+   <xsl:with-param name="count" value="4"/>
+</xsl:call-template>
+```
+Output:
+```
+    Lorem ipsum dolor sit amet,
+    consectetur adipisicing elit.
+```
 
 ### `deflate`
 
@@ -139,12 +177,12 @@ Removes excessive space characters from the string.
 
 ### `xml`
 
-Converts any given nodeset into preformatted text by exploiting local templates with `string:(xml|text)}`.
+Converts any given nodeset into preformatted text by exploiting local templates with modes `string:xml` and `string:text`.
 
-Note: Opera treats space and eol-filled blocks as text nodes, but stylesheet has to preserve unity among parses from different vendors so all match-based templates check normalized content for emptiness.
+Opera browser treats space and eol-filled blocks as text nodes, but stylesheet has to preserve unity among parses from different vendors so all match-based templates check normalized content for emptiness.
 
 **Parameters**<br/>
-* `nodeset` Nodeset to format source of. Current node, by default.
+* **`nodeset`** Nodeset to format source of. Current node, by default.
 
 ## License
 
