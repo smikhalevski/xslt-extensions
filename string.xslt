@@ -49,7 +49,9 @@
         <xsl:param name="input" select="."/>
         <xsl:param name="delimiter"/>
         <xsl:variable name="_delimiter"
-                      select="fn:node-set($delimiter)[name()]|fn:node-set($delimiter)[not(name())]/node()"/>
+                      select="
+             fn:node-set($delimiter)[name()]|
+             fn:node-set($delimiter)[not(name())]/node()"/>
         <xsl:choose>
             <xsl:when test="string($_delimiter)=''">
                 <fragment>
@@ -106,9 +108,13 @@
         <xsl:param name="find"/>
         <xsl:param name="replace"/>
         <xsl:variable name="_find"
-                      select="fn:node-set($find)[name()]|fn:node-set($find)[not(name())]/node()"/>
+                      select="
+             fn:node-set($find)[name()]|
+             fn:node-set($find)[not(name())]/node()"/>
         <xsl:variable name="_replace"
-                      select="fn:node-set($replace)[name()]|fn:node-set($replace)[not(name())]/node()"/>
+                      select="
+             fn:node-set($replace)[name()]|
+             fn:node-set($replace)[not(name())]/node()"/>
         <xsl:variable name="delims"
                       select="$_find[contains($input,.) and .!='']"/>
         <xsl:for-each select="$delims">
@@ -219,32 +225,36 @@
         <xsl:variable name="size">
             <xsl:for-each select="fn:node-set($lines)/node()[normalize-space(translate(.,'&#9;',' '))]">
                 <xsl:variable name="pad"
-                              select="string-length(substring-before(.,substring(normalize-space(translate(.,'&#9;',' ')),1,1)))"/>
+                              select="
+                     string-length(substring-before(.,substring(
+                         normalize-space(translate(.,'&#9;',' ')),
+                         1,1)))"/>
                 <xsl:if test="
-                            not(
-                                preceding::node()[
-                                    normalize-space(translate(.,'&#9;',' ')) and
-                                    $pad>string-length(substring-before(.,substring(normalize-space(translate(.,'&#9;',' ')),1,1)))
-                                ]
-                                or
-                                following::node()[
-                                    normalize-space(translate(.,'&#9;',' ')) and
-                                    $pad>=string-length(substring-before(.,substring(normalize-space(translate(.,'&#9;',' ')),1,1)))
-                                ]
-                            )
-                            ">
+                     not(
+                         preceding::node()[
+                             normalize-space(translate(.,'&#9;',' ')) and
+                             $pad>string-length(substring-before(.,substring(
+                                 normalize-space(translate(.,'&#9;',' ')),
+                                 1,1))) ] or
+                         following::node()[
+                             normalize-space(translate(.,'&#9;',' ')) and
+                             $pad>=string-length(substring-before(.,
+                                 substring(normalize-space(translate(.,'&#9;',' ')),
+                                 1,1)))])">
                     <xsl:value-of select="$pad"/>
                 </xsl:if>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:for-each select="fn:node-set($lines)/node()[normalize-space(translate(.,'&#9;',' ')) 
-                       or (preceding::node()[normalize-space(translate(.,'&#9;',' '))] and following::node()[normalize-space(translate(.,'&#9;',' '))] and not($condense))
-                      ]">
-            <xsl:value-of select="concat(
-                          
-                          substring(.,format-number($size,0,'string:f')+1)
-                          
-                          ,substring($string:eol,0 mod (last()>position())))"/>
+        <xsl:for-each select="
+             fn:node-set($lines)/node()[
+                 normalize-space(translate(.,'&#9;',' ')) or (
+                     preceding::node()[normalize-space(translate(.,'&#9;',' '))] and
+                     following::node()[normalize-space(translate(.,'&#9;',' '))] and
+                     not($condense))]">
+            <xsl:value-of select="
+                 concat(
+                     substring(.,format-number($size,0,'string:f')+1),
+                     substring($string:eol,0 mod (last()>position())))"/>
         </xsl:for-each>
     </xsl:template>
 
