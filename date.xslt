@@ -1,14 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <!--
+  ┌──┐
+  │  │
+  │Eh│ony
+  └──┘
+
   RFC 3339 date and time basic operations for XSLT 1.0.
-  
-  @namespace urn:ehony:date
-  @author Savva Mikhalevski <smikhalevski@gmail.com>
-  @summary date:timestamp($date-time)
-           date:date-time($timestamp)
-           date:set-timezone($date-time,$offset='+00:00')
-           date:duration($msec,$format='')
   -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -106,7 +103,7 @@
                                  concat('0.',substring-after($time,'.'),'_'),
                                  '+-','__'),'_')),0,'date:f'),'NaN','')"/>
     </xsl:template>
-    
+
     <!--
       Converts timestamp in millisecond to RFC 3339 compliant UTC date-time string.
       If provided timestamp cannot be converted to number, empty string is returned.
@@ -224,7 +221,7 @@
             </xsl:choose>
         </xsl:if>
     </xsl:template>
-    
+
     <!--
       Converts provided μsec to a human readable form in requested format.
       
